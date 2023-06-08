@@ -6,7 +6,7 @@ import StepLabel from '@mui/material/StepLabel'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import UploadComponent from './upload/Upload.component'
-import { useGetStudentsQuery } from '../services/students'
+import SelfGrading from './grading/SelfGrading'
 
 const steps = [
   'first file',
@@ -73,6 +73,7 @@ export default function HorizontalLinearStepper() {
           <div>
             <h2>Upload {steps[stepIndex]}</h2>
             <UploadComponent />
+            <SelfGrading />
           </div>
         )}
       </div>

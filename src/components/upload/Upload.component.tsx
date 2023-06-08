@@ -1,4 +1,3 @@
-import React from 'react'
 import { UploadOutlined } from '@ant-design/icons'
 import type { UploadProps } from 'antd'
 import { Button, message, Upload } from 'antd'
@@ -31,14 +30,16 @@ const props: UploadProps = {
   },
 }
 
-const UploadComponent: React.FC = () => (
-  <div style={{ width: 500 }}>
-    <Upload {...props}>
-      <Button icon={<UploadOutlined />} size="large">
-        Click to Upload
-      </Button>
-    </Upload>
-  </div>
-)
+const UploadComponent = () => {
+  return (
+    <div style={{ width: 500 }}>
+      <Upload {...props}>
+        <Button icon={<UploadOutlined />} size="large">
+          Click to Upload
+        </Button>
+      </Upload>
+    </div>
+  )
+}
 
 export default UploadComponent

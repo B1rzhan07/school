@@ -12,13 +12,14 @@ import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import { useNavigate } from 'react-router-dom'
 
-const settings = ['Logout']
-
 function HeaderComponent() {
+  const log = localStorage.getItem('log')
+  log && console.log('log', JSON.parse(log))
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null,
   )
+  console.log('anchorElNav', anchorElNav)
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
@@ -71,28 +72,51 @@ function HeaderComponent() {
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            {log && (
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <>
+                  <MenuItem
+                    onClick={handleCloseUserMenu}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <Typography textAlign="center">
+                      {JSON.parse(log).role === 'ROLE_ADMIN'
+                        ? 'Admin'
+                        : log && JSON.parse(log).role === 'ROLE_COMMISSION'
+                        ? 'Teacher'
+                        : 'Student'}
+                    </Typography>
+                  </MenuItem>
+
+                  <MenuItem
+                    onClick={() => {
+                      localStorage.removeItem('log')
+                      window.location.reload()
+                    }}
+                  >
+                    Logout
+                  </MenuItem>
+                </>
+              </Menu>
+            )}
           </Box>
         </Toolbar>
       </Container>

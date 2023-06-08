@@ -1,0 +1,38 @@
+.self-grading-container {
+    padding: 24px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.self-grading-input {
+    margin: 20px 0;
+    width: 200px;
+}
+
+.self-grading-button {
+    margin-bottom: 20px;
+}
+
+.self-grading-grade {
+    margin-top: 10px;
+}
+
+.grade-text {
+    font-weight: bold;
+}
+
+.grade-fail {
+    color: #ff4d4f;
+}
+
+.grade-pass {
+    color: #ffa940;
+}
+
+.grade-excellent {
+    color: #52c41a;
+}

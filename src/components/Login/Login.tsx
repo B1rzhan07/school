@@ -1,12 +1,9 @@
-import { Button, Checkbox, Form, Input, Modal } from 'antd'
-import { useState } from 'react'
+import { Button, Checkbox, Form, Input, Modal, notification } from 'antd'
+import { useEffect, useState } from 'react'
 import { useLoginMutation } from '../../services/pokemon'
-import { LoginRequest } from './typesLogin'
+import { useNavigate } from 'react-router-dom'
 
-export type LoginError = {
-  outOfDate: boolean
-  values: LoginRequest
-}
+type NotificationType = 'success' | 'info' | 'warning' | 'error'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -14,30 +11,51 @@ const Login = () => {
   const [resetPasswordModalVisible, setResetPasswordModalVisible] = useState(
     false,
   )
+  console.log('email', email)
+  console.log('password', password)
 
-  console.log(email, password)
+  const [login, { isError, isSuccess, data }] = useLoginMutation()
 
   const showResetPasswordModal = () => {
     setResetPasswordModalVisible(true)
   }
-
   const handleResetPassword = () => {
     setResetPasswordModalVisible(false)
   }
-  console.log(email, password)
-  const [login, { isLoading, isError, isSuccess, data }] = useLoginMutation()
-  console.log(isLoading, isError, isSuccess, data)
 
   const onFinish = () => {
     login({
-      email: 'admin',
+      email: 'participant',
       password: 'admin',
     })
   }
 
-  const onFinishFailed = (errorInfo: LoginError) => {
-    console.log('Failed:', errorInfo)
+  const openNotificationWithIcon = (
+    type: NotificationType,
+    message: string,
+    description: string,
+  ) => {
+    notification[type]({
+      message,
+      description,
+    })
   }
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (isSuccess) {
+      openNotificationWithIcon(
+        'success',
+        'Успешно',
+        'Вы успешно авторизовались!',
+      )
+      localStorage.setItem('log', JSON.stringify(data))
+      navigate('/stepper')
+    }
+
+    if (isError) {
+      openNotificationWithIcon('error', 'Ошибка', 'Неверный логин или пароль!')
+    }
+  }, [isSuccess, isError, data, navigate])
 
   return (
     <div
@@ -61,7 +79,6 @@ const Login = () => {
           }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           <h2 style={{ textAlign: 'center', marginBottom: 24 }}>Логин</h2>
